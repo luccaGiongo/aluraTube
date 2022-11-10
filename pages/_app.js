@@ -2,6 +2,7 @@ import React from "react";
 import { CSSReset } from "../src/components/CSSReset";
 import { ThemeProvider } from "styled-components";
 import ColorModeProvider, { ColorModeContext } from "../src/components/Menu/components/ColorModeProvider";
+import RegisterVideo from "../src/components/RegisterVideo";
 
 // Arquivo reconhecido pelo Next.js como se fosse um index;
 // Esse arquivo é carregado primeiro, antes de qualquer coisa;
@@ -46,6 +47,7 @@ function MyApp({ Component, pageProps }) {
         < ThemeProvider theme={theme[contexto.mode]} >
             <CSSReset />
             <Component {...pageProps} />
+            <RegisterVideo />
         </ThemeProvider >
     );
 }
