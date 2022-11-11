@@ -4,11 +4,35 @@ import config from "../config.json";
 import styled from "styled-components";
 import Menu from "../src/components/Menu/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import { createClient } from '@supabase/supabase-js';
 
+const PROJECT_URL = "https://xldpmfurahqzbdbqqzao.supabase.co";
+const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZHBtZnVyYWhxemJkYnFxemFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgxNzI2MjYsImV4cCI6MTk4Mzc0ODYyNn0.6raT1OcRUKTdu4Im4tDxnx34w-NyBZh8cBZwTORigqw";
+const supabase = createClient(PROJECT_URL, PUBLIC_KEY);
 
 function HomePage() {
-
     const [valorDoFiltro, setValorDoFiltro] = useState("");
+    const [playlists, setPlaylists] = React.useState({ "jogos": [] });
+
+    // requisição para pegar os dados do banco;
+    // assync e await já é feito por baixo dos panos automáticamente;
+    // com *, estamos pegando todos os dados da tabela;
+    React.useEffect(() => {
+        supabase.from("video")
+            .select("*")
+            .then((dados) => {
+                const novasPlaylists = { ...playlists };
+                dados.data.forEach((video) => {
+                    if (!novasPlaylists[video.playlist]) {
+                        novasPlaylists[video.playlist] = [];
+                    }
+                    novasPlaylists[video.playlist].push(video);
+                })
+                setPlaylists({ ...playlists })
+            })
+    }, [])
+
+    console.log("pronto playlist", playlists)
 
     return (
         <>
